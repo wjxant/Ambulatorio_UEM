@@ -1,0 +1,131 @@
+/* General Reset */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url("../assets/img/fondoHospital.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; /* Ajusta el tamaño del fondo para cubrir toda la pantalla */
+    background-position: center;
+}
+
+/* Encabezado */
+h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600; /* Hace el título más destacado */
+}
+
+/* Contenedor del formulario */
+.formulario {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo ligeramente translúcido para resaltar el contenido */
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px; /* Limita el ancho máximo para mantener un diseño ordenado */
+}
+
+/* Etiquetas del formulario */
+label {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 8px;
+    display: inline-block;
+    font-weight: 500;
+}
+
+/* Campos de entrada */
+input[type="text"], [type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Agrega transición en foco */
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+/* Mensajes de error */
+#errorUser, #errorContraseña {
+    color: #d9534f;
+    font-size: 0.9rem;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+#errorValidacion{
+    color: #d9534f;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#errorUser input[type="image"], #errorContraseña input[type="image"] {
+    width: 18px; /* Icono más pequeño */
+    vertical-align: middle;
+    margin-right: 8px;
+}
+#errorValidacion input[type="image"]{
+    width: 18px; /* Icono más pequeño */
+}
+
+
+
+/* Botón de envío */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Separación del contenido previo */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Enlace */
+a {
+    font-size: 0.95rem;
+    color: #007bff;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 15px;
+    text-align: center;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo del contenedor del formulario para dispositivos pequeños */
+@media (max-width: 400px) {
+    .formulario {
+        padding: 20px;
+        width: 100%;
+        max-width: 90%;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

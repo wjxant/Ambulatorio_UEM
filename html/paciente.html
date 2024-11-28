@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paciente</title>
+</head>
+<body>
+    
+    <h1>Ficha Paciente</h1>
+    <div class="infoPersonalPDiv">
+        <h2>Datos del Paciente:</h2>
+        Nombre: <div class="nombrePEspacio" id="nombrePEspacio">---</div><br>
+        Sexo: <div class="sexoPEspacio" id="sexoPEspacio">---</div><br>
+        Fecha de nacimiento: <div class="nacimientoPEspacio" id="nacimientoPEspacio">---</div><br>
+    </div>
+    <div class="citacionesProximaPDiv">
+        <h2>Proximas Citas:</h2>
+        <div class="proximasCitasP" id="proximasCitasP">No has tenido ningun cita</div><br>
+    </div>
+    <div class="medicamenosActualesPDiv">
+        <h2>Medicamentos Actuales:</h2>
+        <div class="medicamenosActualesP" id="medicamenosActualesP">No tienes ningun medicamento</div>
+    </div>
+    <div class="historialConsultaPDiv">
+        <h2>Historial de Consultas:</h2>
+        <select multiple id="historialConsultaP" class="historialConsultaP">
+            <option value="vacio">--- No hay ningun cita ---</option>
+        </select>
+        <button type="submit" name="ver" id="consultar">Ver mas Detalle</button>
+        <div class="infoHistorialConsultaP" id="infoHistorialConsultaP">
+
+        </div>
+    </div>
+    <div class="masOpcionesP">
+        <h2>Pedir Cita</h2>
+        <button type="button" name="citaMedicoFamiliaPButt" id="citaMedicoFamiliaPButt">Pedir cita con el Medico</button>
+        <div class="citaMedicoFamiliaP">
+
+        </div>
+    </div>
+
+    <!--Conexion con el JS-->
+    <script src="../feacture/operarPaciente.js"></script>
+    
+</body>
+</html>
