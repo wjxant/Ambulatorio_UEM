@@ -48,10 +48,11 @@ $result2 = $conn->query($queryCitasFuturas);
 $citasFuturas = [];
 
 // Lo pasamos a un array
-while ($row = $result2->fetch_assoc()) {
-    $citasFuturas[] = $row;
+if ($result2 && $result2->num_rows > 0) {
+    while ($row = $result2->fetch_assoc()) {
+        $citasFuturas[] = $row;
+    }
 }
-
 //CONSULTA MEDICAMENTOS
 //la consulta se calcula directamente el dia
 $queryMedicamentos = "SELECT 
@@ -111,6 +112,19 @@ if (isset($data['idCitaDetail'])) {
     }
 }
 
+$queryAsignacionMedico = "SELECT Medico.nombre 
+                            FROM paciente_medico
+                            INNER JOIN Medico ON paciente_medico.id_medico = Medico.id 
+                            WHERE id_paciente = $id;
+                            ";
+    $result8 = $conn->query($queryAsignacionMedico);
+    $asignacionMedico = [];
+    if ($result8 && $result8->num_rows > 0) {
+        while ($row = $result8->fetch_assoc()) {
+            $asignacionMedico[] = $row;
+        }
+    }
+
 
 
 
@@ -121,5 +135,6 @@ echo json_encode([
     'citasFuturas' => $citasFuturas, // Incluye todas las citas futuras
     'medicamentos' => $medicamentos,
     'citasPasadas' => $citasPasadas,
-    'citasPasadasDetails' => $citasPasadasDetails
+    'citasPasadasDetails' => $citasPasadasDetails,
+    'asignacionMedico' => $asignacionMedico
 ]);

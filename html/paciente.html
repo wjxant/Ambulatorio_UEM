@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/stylePaciente.css">
     <title>Paciente</title>
 </head>
+
 <body>
-    
+
     <h1>Ficha Paciente</h1>
     <div class="infoPersonalPDiv">
         <h2>Datos del Paciente:</h2>
@@ -33,16 +36,33 @@
 
         </div>
     </div>
-    <div class="masOpcionesP">
+    <div class="pedirCita">
         <h2>Pedir Cita</h2>
-        <button type="button" name="citaMedicoFamiliaPButt" id="citaMedicoFamiliaPButt">Pedir cita con el Medico</button>
-        <div class="citaMedicoFamiliaP">
+        <form action="#" method="post">
+            <label for="divMedicoSelect">Selecciona uno Medico para la Cita</label><br>
+            <select name="divMedicoSelect" id="divMedicoSelect">
+                <option value="ningunMedico">--- Seleccione un Medico ---</option>
+            </select><br>
+            <div id="errorSelect"></div>
+            <div id="infoSelect"></div>
+            <label for="diaCita">Seleccione un dia de la cita: </label><br>
+            <input type="date" name="diaCita" id="diaCita"><br>
+            <div id="errorDiaCita"></div>
+            <label for="sintomatologia">Escribe brevemente que te ocurre: </label><br>
+            <textarea name="sintomatologia" id="sintomatologia"></textarea><br>
 
-        </div>
+
+            <button type="submit" name="citaMedicoFamiliaPButt" id="citaMedicoFamiliaPButt">Pedir cita con el
+                Medico</button>
+            <div class="errorCitaMedicoFamiliaPButt"></div>
+
+        </form>
+
     </div>
 
     <!--Conexion con el JS-->
     <script src="../feacture/operarPaciente.js"></script>
-    
+
 </body>
+
 </html>

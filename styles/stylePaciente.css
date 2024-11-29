@@ -1,0 +1,124 @@
+/* Estilos Globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Fondo y color base */
+body {
+    background-color: #f4f7fc;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Títulos */
+h1, h2 {
+    color: #333;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Contenedores */
+.infoPersonalPDiv, .citacionesProximaPDiv, .medicamenosActualesPDiv, .historialConsultaPDiv, .pedirCita {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+/* Espaciado de los elementos dentro de cada contenedor */
+#idPEspacio, #nombrePEspacio, #sexoPEspacio, #nacimientoPEspacio, 
+#proximasCitasP, #medicamenosActualesP, #historialConsultaP, 
+#infoHistorialConsultaP, #errorSelect, #infoSelect, #errorDiaCita {
+    font-weight: normal;
+    font-size: 1rem;
+    color: #555;
+}
+
+textarea, input[type="date"], select, button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+}
+
+/* Botones */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 12px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* Estilo para los mensajes de error */
+#errorSelect, #errorDiaCita {
+    color: #d9534f;
+    font-size: 1rem;
+    margin-top: -10px;
+}
+
+#errorSelect img, #errorDiaCita img {
+    width: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* Estilo para el textarea */
+textarea {
+    height: 120px;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .infoPersonalPDiv, .citacionesProximaPDiv, .medicamenosActualesPDiv, 
+    .historialConsultaPDiv, .pedirCita {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    input[type="date"], select, textarea, button {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}
+
+/* Estilo para los selects múltiples */
+select[multiple] {
+    height: 150px;
+}
