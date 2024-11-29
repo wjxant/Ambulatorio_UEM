@@ -1,51 +1,58 @@
--- Tabla de persona que coni
-CREATE TABLE Personas (
-    id_persona INT AUTO_INCREMENT PRIMARY KEY,
+-- Tabla de pacientes
+CREATE TABLE Paciente (
+    id INT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
+    sexo ENUM('M', 'F') NOT NULL, -- 'M' para masculino, 'F' para femenino
     fecha_nacimiento DATE NOT NULL,
-    sexo ENUM('M', 'F') NOT NULL,
-    user VARCHAR(100) UNIQUE NOT NULL,
-    pass VARCHAR(255) NOT NULL,
-    tipo_usuario ENUM('PACIENTE', 'MEDICO') NOT NULL,
-    especialidad VARCHAR(50), -- se puede dejar vacio en caso si es un paciente
+    usuario VARCHAR(50) UNIQUE NOT NULL, -- Nombre de usuario único
+    password VARCHAR(255) NOT NULL -- Contraseña, almacenada de forma segura (encriptada)
+);
+
+-- Tabla de médicos
+CREATE TABLE Medico (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    especialidad VARCHAR(50) NOT NULL,
+    usuario VARCHAR(50) UNIQUE NOT NULL, -- Nombre de usuario único
+    password VARCHAR(255) NOT NULL -- Contraseña, almacenada de forma segura (encriptada)
 );
 
 -- Tabla de citas
-CREATE TABLE Citas (
-    id_cita INT AUTO_INCREMENT PRIMARY KEY,
-    id_paciente INT NOT NULL, --forinkey de paciente
-    id_medico INT NOT NULL, -- foreinkey de medico
-    fecha_cita DATE NOT NULL,
-    sintomas TEXT, -- Opcional
-    FOREIGN KEY (id_paciente) REFERENCES Personas(id_persona),
-    FOREIGN KEY (id_medico) REFERENCES Personas(id_persona)
-);
-
--- Tabla de consultas
-CREATE TABLE Consultas (
-    id_consulta INT AUTO_INCREMENT PRIMARY KEY,
-    id_cita INT NOT NULL, -- Relación con una cita
+CREATE TABLE Cita (
+    id INT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    id_medico INT NOT NULL,
+    sintomatologia TEXT,
     diagnostico TEXT,
-    FOREIGN KEY (id_cita) REFERENCES Citas(id_cita)
+    fecha DATE NOT NULL,
+    FOREIGN KEY (id_paciente) REFERENCES Paciente(id),
+    FOREIGN KEY (id_medico) REFERENCES Medico(id)
 );
 
--- Tabla de medicación
-CREATE TABLE Medicacion (
-    id_medicacion INT AUTO_INCREMENT PRIMARY KEY,
-    id_consulta INT NOT NULL,
-    medicamento VARCHAR(100) NOT NULL,
-    cantidad VARCHAR(50) NOT NULL,
-    frecuencia VARCHAR(50) NOT NULL,
-    dias INT, -- Opcional si la medicación es crónica
-    cronica BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (id_consulta) REFERENCES Consultas(id_consulta)
+-- Tabla de medicamentos
+CREATE TABLE Medicamento (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
 );
 
--- Tabla de documentos
-CREATE TABLE Documentos (
-    id_documento INT AUTO_INCREMENT PRIMARY KEY,
-    id_consulta INT NOT NULL,
-    tipo VARCHAR(50) NOT NULL,
-    archivo LONGBLOB NOT NULL, -- Archivo binario (PDF, imágenes, etc.)
-    FOREIGN KEY (id_consulta) REFERENCES Consultas(id_consulta)
+-- Relación cita-medicamento
+CREATE TABLE Cita_Medicamento (
+    id_cita INT NOT NULL,
+    id_medicamento INT NOT NULL,
+    cantidad VARCHAR(50),
+    frecuencia VARCHAR(50),
+    duracion INT, -- en días
+    es_cronica BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (id_cita, id_medicamento),
+    FOREIGN KEY (id_cita) REFERENCES Cita(id),
+    FOREIGN KEY (id_medicamento) REFERENCES Medicamento(id)
+);
+
+-- Relación paciente-médico (médicos que tratan a un paciente)
+CREATE TABLE Paciente_Medico (
+    id_paciente INT NOT NULL,
+    id_medico INT NOT NULL,
+    PRIMARY KEY (id_paciente, id_medico),
+    FOREIGN KEY (id_paciente) REFERENCES Paciente(id),
+    FOREIGN KEY (id_medico) REFERENCES Medico(id)
 );

@@ -1,25 +1,18 @@
-
-document.addEventListener(DOMException, function (){
-
-    const param = new URLSearchParams (window.location.search);
-    const idPersona = param.get ('id_persona');
-
-    }
-);
-
-
-
+const param = new URLSearchParams (window.location.search);
+const idPersona = param.get ('id_persona');
 
 //div para infoPersonalPDiv
+const divIdEspacio = document.getElementById('idPEspacio');
 const divNombreEspacio = document.getElementById('nombrePEspacio');
 const divSexoEspacio = document.getElementById('sexoPEspacio');
 const divNacimientoEspacio = document.getElementById('nacimientoPEspacio');
 //introducimos datos, para la entreha de Irene tenemos que modificar
 //MODIFICAR
+divIdEspacio.innerHTML =idPersona;
 divNombreEspacio.innerHTML = ``;
 divSexoEspacio.innerHTML = ``;
 divNacimientoEspacio.innerHTML = ``;
-divNombreEspacio.innerHTML = "Juan Perez";
+divNombreEspacio.innerHTML = "Juan Perez ";
 divSexoEspacio.innerHTML = "Hombre";
 divNacimientoEspacio.innerHTML = "2000 - 01 - 01";
 
@@ -91,3 +84,6 @@ function imprimirInfo(valor) {
 
 
 }
+
+
+//conexion con php
