@@ -20,7 +20,7 @@ user.onblur = function () {
     if (user.value.trim() == "") {
         errorUser.innerHTML = ""
         errorUser.innerHTML = `
-            <input type="image" src="../assets/icon/errorIcon.png" alt="errorIcon">
+        <img src="assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
             El usuario no puede ser vacio
         `;
         validadoUser = false;
@@ -28,7 +28,7 @@ user.onblur = function () {
     } else {
         if (validarUser(user.value) !== true) {
             errorUser.innerHTML = `
-                <input type="image" src="../assets/icon/errorIcon.png" alt="errorIcon">
+                <img src="assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
                 El usuario tiene:
                 <ul>
                     <li>Empezar por una Letra</li>
@@ -60,7 +60,7 @@ contraseña.onblur = function () {
     if (contraseña.value.trim() == "") {
         errorContraseña.innerHTML = ""
         errorContraseña.innerHTML = `
-            <input type="image" src="../assets/icon/errorIcon.png" alt="errorIcon">
+            <img src="assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
             La contraseña no puede ser vacia
         `;
         validadoPass = false;
@@ -68,7 +68,7 @@ contraseña.onblur = function () {
     } else {
         if (validarContraseña(contraseña.value) !== true) {
             errorContraseña.innerHTML = `
-                <input type="image" src="../assets/icon/errorIcon.png" alt="errorIcon">
+                <img src="assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
                 La contraseña debe contener:
                 <ul>
                     <li>Más de 4 dígitos</li>
@@ -112,7 +112,7 @@ function comprobarValidaciones(){
     if (validadoUser == false || validadoPass == false){
         document.getElementById('submit').disabled = true; 
         errorValidacion.innerHTML = `
-            <input type="image" src="../assets/icon/errorIcon.png" alt="errorIcon">
+            <img src="assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
             El Usuario y la Contraseña no son válidos
             ${validadoUser}, ${validadoPass}
         `;
