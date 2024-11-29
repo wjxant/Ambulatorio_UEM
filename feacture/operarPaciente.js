@@ -1,5 +1,10 @@
-const param = new URLSearchParams (window.location.search);
-const idPersona = param.get ('id_persona');
+const param = new URLSearchParams(window.location.search);
+const id = param.get('id');
+const tipoPerfil = param.get('type');
+
+
+console.log('ID:', id);  // Debe mostrar 2
+console.log('Tipo de Perfil:', tipoPerfil);  // Debe mostrar P
 
 //div para infoPersonalPDiv
 const divIdEspacio = document.getElementById('idPEspacio');
@@ -8,82 +13,131 @@ const divSexoEspacio = document.getElementById('sexoPEspacio');
 const divNacimientoEspacio = document.getElementById('nacimientoPEspacio');
 //introducimos datos, para la entreha de Irene tenemos que modificar
 //MODIFICAR
-divIdEspacio.innerHTML =idPersona;
-divNombreEspacio.innerHTML = ``;
-divSexoEspacio.innerHTML = ``;
-divNacimientoEspacio.innerHTML = ``;
-divNombreEspacio.innerHTML = "Juan Perez ";
-divSexoEspacio.innerHTML = "Hombre";
-divNacimientoEspacio.innerHTML = "2000 - 01 - 01";
-
-//div para citacionesProximaPDiv
-const divProximasCitasEspacio = document.getElementById('proximasCitasP');
-//MODIFICAR
-divProximasCitasEspacio.innerHTML = `
-    Fecha: 2022-12-01 <br>
-    <ul>
-        <li>ID: 1001</li>
-        <li>Medico: Paula Sanchez</li>
-    </ul>    
-`;
-
-//div para medicamenosActualesPDiv
-const divMedicamentoActualesEspacio = document.getElementById('medicamenosActualesP');
-//MODIFICAR
-divMedicamentoActualesEspacio.innerHTML = `
-    <ul>
-        <li>Amoxicilina (2022-12-1)</li>
-        <li>Paracetamol (2021-12-1)</li>
-    </ul>
-`;
-
-//div para historialConsultaPDiv
-const lista = document.getElementById('historialConsultaP');
-const btnVer = document.querySelector('#consultar');
-const divInfoEspacio = document.getElementById('infoHistorialConsultaP');
-//MODIFICAR
-let tarea = ['(1001) - (2020-01-20)', '(1002) - (2020-03-20)'];
-if (tarea.length > 0) {
-    lista.innerHTML = '';
-    tarea.forEach(item => {
-        //añadimos el elemento al select
-        lista.innerHTML += `<option value="${item}">${item}</option>`;
-    });
-}
-btnVer.onclick = (event) => {
-    event.preventDefault();
-    //creamos un nuevo array que se llama seleccionado
-    //y pasamos los valores ques esta seleccionado
-    const seleccionado = document.querySelectorAll("#historialConsultaP option:checked");
-    //comprobamos el tamaño del array
-    //si el array es igual que 0 signidica el array es 
-    if (seleccionado.length === 0) {
-        alert("No hay ningún seleccionado!");
-        return;
-    }
-    //iteramos el array que contiene el seleccionado
-    //en teoria solo habra 1 elemento
-    seleccionado.forEach(valorSeleccionado => {
-        imprimirInfo(valorSeleccionado)
-    })
-};
-function imprimirInfo(valor) {
-    //sacamos el indice que se encuentra en el array
-    const indice = tarea.indexOf(valor.value);
-    if (indice == 0) {
-        divInfoEspacio.innerHTML = '';
-        divInfoEspacio.innerHTML = 'Dolor de Estomago';
-    }
-    else if (indice === 1) {
-        divInfoEspacio.innerHTML = '';
-        divInfoEspacio.innerHTML = 'Dolor de cabeza';
-    } else {
-        divInfoEspacio.innerHTML = '';
-        divInfoEspacio.innerHTML = `No has seleccionado nada index: ${indice}`;
-    }
-
-
-}
+divIdEspacio.innerHTML = `${id} : ${tipoPerfil}`;
 
 
 //conexion con php
+fetch("../database/operarPacientes.php", {
+    method: 'POST',
+    headers: {
+        'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ id: id, tipoPerfil: tipoPerfil }),
+})
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al obtener datos del servidor.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            alert('Error: ' + data.error);
+        } else {
+            //actualizar los informaciones personales del paciente
+            document.getElementById('nombrePEspacio').innerHTML = data.infoNombre || '';
+            document.getElementById('sexoPEspacio').innerHTML = data.infoSexo || '';
+            document.getElementById('nacimientoPEspacio').innerHTML = data.infoFecha_nacimiento || '';
+
+            //actualizar la lista de los citas futuras
+            //comprobamos si ha devuelto algun dato, en casode si, significa que hay citas, y si no, no
+            if (data.citasFuturas > 0) {
+                //se hace un map con los contenido de un array
+                //transformamos el array de objeto del citasFutura y lo pasamos a una lista de cadena te texto (map) y cada lista deelemento se va a llamerse citasFuturas1
+                document.getElementById('proximasCitasP').innerHTML = data.citasFuturas.map(citasFuturas1 => `
+                Fecha: ${citasFuturas1.fecha}<br>
+                <ul>
+                    <li>ID: ${citasFuturas1.id}</li>
+                    <li>Médico: ${citasFuturas1.nombre}</li>
+                </ul>
+            `).join('');
+            }
+            //actualizar los medicamentos que esta tomando
+            if (data.medicamentos.length > 0) {
+                document.getElementById('medicamenosActualesP').innerHTML = data.medicamentos.map(medicamentos1 => `
+                Medicamento: ${medicamentos1.medicamento}<br>
+                <ul>
+                    <li>Fecha: ${medicamentos1.fecha_fin}</li>
+                </ul>
+                `).join('');
+            }
+
+            //actualizar la lista de historiorial de consulta
+            if (data.citasPasadas.length > 0) {
+                document.getElementById('historialConsultaP').innerHTML = data.citasPasadas.map(citasPasadas1 => `
+                    <option value="${citasPasadas1.id}">${citasPasadas1.id} => ${citasPasadas1.fecha}</option>
+                    `).join('');
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+    })
+
+
+//ACTUALIZAR EL HISTORIAL DE LA CUNSULTA
+//solo ejecutara cuando presionamos el boton (actionlistener)
+document.querySelector('#consultar').onclick = (event) => {
+    event.preventDefault();
+
+    // Obtenemos los elementos seleccionados del select
+    const seleccionado1 = document.querySelectorAll("#historialConsultaP option:checked");
+
+    // Comprobamos si hay al menos un elemento seleccionado
+    if (seleccionado1.length === 0) {
+        alert("No hay ningún elemento seleccionado!");
+        return;
+    } else {
+        // Asumimos que solo hay un elemento seleccionado
+        const idCitaDetail = seleccionado1[0].value;
+
+        // Enviamos la solicitud con el idCitaDetail adicional
+        fetch("../database/operarPacientes.php", {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            //enviamos v/ asignamos datos nuevamente
+            body: JSON.stringify({
+                id: id,  // El id del paciente que ya tienes
+                tipoPerfil: tipoPerfil,  // El tipo de perfil que ya tienes
+                idCitaDetail: idCitaDetail  // El id de la cita seleccionada
+            }),
+        })
+            //revisamos las respuestas
+            .then(response => {
+                //en caso si es distinto a un ok
+                if (!response.ok) {
+                    throw new Error('Error al obtener datos del servidor.');
+                }
+                return response.json();
+            })
+            //si nos devuelve un dato (json)
+            .then(data => {
+                imprimirInfo(data); // Pasa los datos correctamente
+            })
+
+    };
+    //metodo para imprimir los informaciones en el espacio del div
+    function imprimirInfo(data) {
+        if (data.citasPasadasDetails.length < 1) {
+            document.getElementById('infoHistorialConsultaP').innerHTML = "Datos no encontrados en BBDD";
+        } else {
+            // Mostrar los detalles de la cita pasada
+            document.getElementById('infoHistorialConsultaP').innerHTML = data.citasPasadasDetails.map(citasPasadasDetails1 => `
+                ID Cita: ${citasPasadasDetails1.id}<br>
+                Médico: ${citasPasadasDetails1.nombre}<br>
+                Sintomatología: ${citasPasadasDetails1.sintomatologia}<br>
+                Diagnóstico: ${citasPasadasDetails1.diagnostico}<br>
+                Fecha: ${citasPasadasDetails1.fecha}<br>
+            `).join('');
+        }
+    }
+};

@@ -15,17 +15,17 @@
             //lo transformamos en un array que contiene la fila entera de la consulata
             $bbddUser = $resultadoUser->fetch_assoc();
             if ($bbddUser['pass'] === $contaseña){
-                $idPersona = $bbddUser['id_persona'];
+                $idPersona = $bbddUser['id'];
                 $tipo = "P";
-                header('Location: ../html/paciente.html?id_persona='.$idPersona."?type=".$tipo);
+                header('Location: ../html/paciente.html?id='.$idPersona."&type=".$tipo);
             }
         }else if($resultadoUser2 && mysqli_num_rows($resultadoUser2) > 0){
              //lo transformamos en un array que contiene la fila entera de la consulata
              $bbddUser = $resultadoUser2->fetch_assoc();
              if ($bbddUser['pass'] === $contaseña){
-                 $idPersona = $bbddUser['id_persona'];
+                 $idPersona = $bbddUser['id'];
                  $tipo = "M";
-                 header('Location: ../html/medico.html?id_persona='.$idPersona."?type=".$tipo);
+                 header('Location: ../html/medico.html?id='.$idPersona."&type=".$tipo);
              }
         }else{
             header('Location: ../html/errorLogin.html');
