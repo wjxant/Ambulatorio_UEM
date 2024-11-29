@@ -6,6 +6,16 @@ const errorValidacion = document.getElementById('errorValidacion');
 let validadoUser = false;
 let validadoPass = false;
 //comprobaciones donde se pierde el foco en el usuario
+
+if((/^[A-Za-z]\d{9}$/.test(user.value))){
+    validadoUser = true;
+}
+if((/^(?=.*\d{4,})(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z]).*$/
+    .test(contraseña.value))){
+    validadoPass = true;
+}
+
+
 user.onblur = function () {
     if (user.value.trim() == "") {
         errorUser.innerHTML = ""
