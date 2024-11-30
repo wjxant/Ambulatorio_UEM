@@ -28,7 +28,7 @@ $tablaMedicos = "CREATE TABLE Medico (
 mysqli_query($conn, $tablaMedicos) or die("Error Crear Tablas");
 
 $tablaCitas = "CREATE TABLE Cita (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     id_paciente INT NOT NULL,
     id_medico INT NOT NULL,
     sintomatologia TEXT,

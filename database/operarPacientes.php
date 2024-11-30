@@ -112,18 +112,50 @@ if (isset($data['idCitaDetail'])) {
     }
 }
 
-$queryAsignacionMedico = "SELECT Medico.nombre 
+$queryAsignacionMedico = "SELECT Medico.nombre, id_medico
                             FROM paciente_medico
                             INNER JOIN Medico ON paciente_medico.id_medico = Medico.id 
                             WHERE id_paciente = $id;
                             ";
-    $result8 = $conn->query($queryAsignacionMedico);
-    $asignacionMedico = [];
-    if ($result8 && $result8->num_rows > 0) {
-        while ($row = $result8->fetch_assoc()) {
-            $asignacionMedico[] = $row;
-        }
+$result8 = $conn->query($queryAsignacionMedico);
+
+$asignacionMedico = [['nombre' => 'Sin asignar']];
+if ($result8 && $result8->num_rows > 0) {
+    while ($row = $result8->fetch_assoc()) {
+        $asignacionMedico[] = $row;
     }
+}
+
+
+
+$pedirCita = [];  // Inicializar el arreglo
+
+// Asegúrate de que los datos están en la solicitud y no vacíos
+if (isset($data['medicoSeleccionado']) && isset($data['fechaFormateada']) && isset($data['sintomas'])) {
+    $medicoSeleccionado = $data['medicoSeleccionado'];
+    $fechaFormateada = $data['fechaFormateada'];
+    $sintomas = $data['sintomas'];
+    $id = $data['id'];
+    // Consulta SQL con declaración preparada (prevención de inyecciones SQL)
+    $queryPedircitas = "INSERT INTO cita (id_paciente, id_medico, sintomatologia, fecha) VALUES ($id, $medicoSeleccionado, '$sintomas', '$fechaFormateada')";
+
+    $result10 = $conn->query(query: $queryPedircitas);
+    // Ejecutar la consulta
+    if ($result10) {
+        // Respuesta de éxito si la inserción fue exitosa
+        $pedirCita = array('status' => 'success', 'message' => 'Cita registrada con éxito.');
+
+        //echo json_encode($pedirCita);
+    } else {
+        // Respuesta de error si la inserción falla
+        $pedirCita = array('status' => 'error', 'message' => 'Error al insertar cita: ');
+        // echo json_encode($pedirCita);
+    }
+} else {
+    // Respuesta si los datos no están presentes
+    $pedirCita = array('status' => 'error', 'message' => 'Datos incompletos.');
+    //echo json_encode($response);
+}
 
 
 
@@ -136,5 +168,6 @@ echo json_encode([
     'medicamentos' => $medicamentos,
     'citasPasadas' => $citasPasadas,
     'citasPasadasDetails' => $citasPasadasDetails,
-    'asignacionMedico' => $asignacionMedico
+    'asignacionMedico' => $asignacionMedico,
+    'pedirCita' => $pedirCita
 ]);

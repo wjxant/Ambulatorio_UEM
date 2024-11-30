@@ -10,7 +10,11 @@
 
 <body>
 
-    <h1>Ficha Paciente</h1>
+    
+    <div class="divCerrarSesion">
+        <button type="submit" name="cerrarSesion" id="cerrarSesion">Cerrar Sesion</button>
+    </div>
+    <h1 id="title">Ficha Paciente</h1>
     <div class="infoPersonalPDiv">
         <h2>Datos del Paciente:</h2>
         ID: <div class="idPEspacio" id="idPEspacio">---</div><br>
@@ -18,14 +22,15 @@
         Sexo: <div class="sexoPEspacio" id="sexoPEspacio">---</div><br>
         Fecha de nacimiento: <div class="nacimientoPEspacio" id="nacimientoPEspacio">---</div><br>
     </div>
-    <div class="citacionesProximaPDiv">
-        <h2>Proximas Citas:</h2>
-        <div class="proximasCitasP" id="proximasCitasP">No has tenido ningun cita</div><br>
-    </div>
     <div class="medicamenosActualesPDiv">
         <h2>Medicamentos Actuales:</h2>
         <div class="medicamenosActualesP" id="medicamenosActualesP">No tienes ningun medicamento</div>
     </div>
+    <div class="citacionesProximaPDiv">
+        <h2>Proximas Citas:</h2>
+        <div class="proximasCitasP" id="proximasCitasP">No has tenido ningun cita</div><br>
+    </div>
+    
     <div class="historialConsultaPDiv">
         <h2>Historial de Consultas:</h2>
         <select multiple id="historialConsultaP" class="historialConsultaP">
@@ -38,7 +43,7 @@
     </div>
     <div class="pedirCita">
         <h2>Pedir Cita</h2>
-        <form action="#" method="post">
+        <form action="../database/operarPacientes.php" method="post" id="pedirCita">
             <label for="divMedicoSelect">Selecciona uno Medico para la Cita</label><br>
             <select name="divMedicoSelect" id="divMedicoSelect">
                 <option value="ningunMedico">--- Seleccione un Medico ---</option>
@@ -46,15 +51,15 @@
             <div id="errorSelect"></div>
             <div id="infoSelect"></div>
             <label for="diaCita">Seleccione un dia de la cita: </label><br>
-            <input type="date" name="diaCita" id="diaCita"><br>
-            <div id="errorDiaCita"></div>
-            <label for="sintomatologia">Escribe brevemente que te ocurre: </label><br>
-            <textarea name="sintomatologia" id="sintomatologia"></textarea><br>
-
+            <input type="date" name="diaCita" id="diaCita">
+            <div id="infoDiaSeleccionado"></div><div id="errorDiaCita"></div><br>
+            
+            <label for="sintomas">Escribe brevemente qué te ocurre: </label><br>
+            <textarea name="sintomas" id="sintomas"></textarea><br>
 
             <button type="submit" name="citaMedicoFamiliaPButt" id="citaMedicoFamiliaPButt">Pedir cita con el
                 Medico</button>
-            <div class="errorCitaMedicoFamiliaPButt"></div>
+            <div class="errorCitaMedicoFamiliaPButt" id="errorCitaMedicoFamiliaPButt"></div>
 
         </form>
 

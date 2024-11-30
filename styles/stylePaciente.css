@@ -10,75 +10,84 @@
 body {
     background-color: #f4f7fc;
     color: #333;
-    line-height: 1.6;
-    padding: 20px;
+    line-height: 1.5;
+    padding: 15px;
 }
 
-/* Títulos */
-h1, h2 {
-    color: #333;
+/* Título centrado arriba de todo */
+h1 {
+    font-size: 2rem;
     font-weight: 600;
+    color: #2c3e50;
     text-align: center;
-}
-
-/* Contenedores */
-.infoPersonalPDiv, .citacionesProximaPDiv, .medicamenosActualesPDiv, .historialConsultaPDiv, .pedirCita {
-    background-color: #ffffff;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-}
-
-/* Espaciado de los elementos dentro de cada contenedor */
-#idPEspacio, #nombrePEspacio, #sexoPEspacio, #nacimientoPEspacio, 
-#proximasCitasP, #medicamenosActualesP, #historialConsultaP, 
-#infoHistorialConsultaP, #errorSelect, #infoSelect, #errorDiaCita {
-    font-weight: normal;
-    font-size: 1rem;
-    color: #555;
-}
-
-textarea, input[type="date"], select, button {
-    width: 100%;
-    padding: 12px;
     margin-bottom: 20px;
+    grid-column: span 2; /* Ocupa ambas columnas */
+}
+
+/* Contenedores como tarjetas */
+.infoPersonalPDiv, .medicamenosActualesPDiv, .historialConsultaPDiv, .pedirCita, .citacionesProximaPDiv {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón de cerrar sesión */
+.divCerrarSesion {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+#cerrarSesion {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#cerrarSesion:hover {
+    background-color: #c0392b;
+}
+
+/* Campos de formulario */
+textarea, input[type="date"], select {
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1rem;
     background-color: #f9f9f9;
+    font-size: 1rem;
+    margin-bottom: 10px;
 }
 
 /* Botones */
 button {
-    background-color: #4CAF50;
+    background-color: #3498db;
     color: white;
+    padding: 10px;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
     font-size: 1rem;
-    padding: 12px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #2980b9;
 }
 
-button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-}
-
-/* Estilo para los mensajes de error */
+/* Mensajes de error */
 #errorSelect, #errorDiaCita {
-    color: #d9534f;
-    font-size: 1rem;
-    margin-top: -10px;
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: -5px;
 }
 
 #errorSelect img, #errorDiaCita img {
@@ -87,38 +96,54 @@ button:disabled {
     margin-right: 5px;
 }
 
-/* Estilo para el textarea */
-textarea {
-    height: 120px;
+/* Listas */
+ul {
+    margin-bottom: 20px;
+    margin-left: 30px;
 }
 
-/* Estilos Responsivos */
-@media (max-width: 768px) {
+/* Diseño Responsivo */
+@media (min-width: 720px) {
     body {
-        padding: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Dos columnas */
+        grid-template-rows: auto; /* Filas automáticas */
+        gap: 20px; /* Espacio entre columnas y filas */
+        padding: 40px;
+        justify-content: center;
     }
 
     h1 {
-        font-size: 1.8rem;
+        grid-column: span 2; /* El título ocupa ambas columnas */
+        grid-row: 1; /* Siempre está arriba */
+        text-align: center;
+        margin-bottom: 20px;
     }
 
-    h2 {
-        font-size: 1.2rem;
+    /* Primera fila: todos los div excepto Próximas Citas */
+    .infoPersonalPDiv {
+        grid-column: 1; /* Columna izquierda */
+        grid-row: 2; /* Segunda fila */
     }
 
-    .infoPersonalPDiv, .citacionesProximaPDiv, .medicamenosActualesPDiv, 
-    .historialConsultaPDiv, .pedirCita {
-        padding: 15px;
-        margin: 15px 0;
+    .medicamenosActualesPDiv {
+        grid-column: 2; /* Columna derecha */
+        grid-row: 2; /* Segunda fila */
     }
 
-    input[type="date"], select, textarea, button {
-        font-size: 0.9rem;
-        padding: 10px;
+    .historialConsultaPDiv {
+        grid-column: 1; /* Columna izquierda */
+        grid-row: 3; /* Tercera fila */
     }
-}
 
-/* Estilo para los selects múltiples */
-select[multiple] {
-    height: 150px;
+    .pedirCita {
+        grid-column: 2; /* Columna derecha */
+        grid-row: 3; /* Tercera fila */
+    }
+
+    /* Segunda fila: Próximas Citas */
+    .citacionesProximaPDiv {
+        grid-column: span 2; /* Ocupa ambas columnas */
+        grid-row: 4; /* Cuarta fila */
+    }
 }
