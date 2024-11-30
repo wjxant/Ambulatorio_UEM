@@ -34,6 +34,7 @@ $tablaCitas = "CREATE TABLE Cita (
     sintomatologia TEXT,
     diagnostico TEXT,
     fecha DATE NOT NULL,
+    pdf text,
     FOREIGN KEY (id_paciente) REFERENCES Paciente(id),
     FOREIGN KEY (id_medico) REFERENCES Medico(id))
     ";

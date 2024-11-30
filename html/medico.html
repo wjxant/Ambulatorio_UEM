@@ -6,7 +6,35 @@
     <title>Medico</title>
 </head>
 <body>
-    <h1>Medico</h1>
-    
+    <div class="divCerrarSesion">
+        <button type="submit" name="cerrarSesion" id="cerrarSesion">Cerrar Sesion</button>
+    </div>
+    <h1 id="title">Ficha Medico</h1>
+    <div class="infoPersonalPDiv">
+        <h2>Datos del Medico:</h2>
+        ID: <div class="idPEspacio" id="idPEspacio">---</div><br>
+        Nombre: <div class="nombrePEspacio" id="nombrePEspacio">---</div><br>
+        Especialidad: <div class="especialidadPEspacio" id="especialidadPEspacio">---</div><br>
+        Numero De Consulta en proximos 7 dias: <div class="numConsultaPEspacio" id="numConsultaPEspacio">---</div><br>
+    </div>
+    <div class="Consultas">
+        <h2>Consultas:</h2>
+        <table id="tablaConsulta" border="1">
+            <thead>
+                <tr>
+                    <th>ID Consulta</th>
+                    <th>Paciente</th>
+                    <th>Sintomas</th>
+                    <th>Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div id="infoTabla"></div>
+    </div>
+
+
+    <script src="../feacture/operarMedico.js"></script>
 </body>
 </html>

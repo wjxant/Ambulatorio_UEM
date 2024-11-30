@@ -89,15 +89,17 @@ document.querySelector('#consultar').onclick = (event) => {
 
     // Obtenemos los elementos seleccionados del select
     const seleccionado1 = document.querySelectorAll("#historialConsultaP option:checked");
-
     // Comprobamos si hay al menos un elemento seleccionado
     if (seleccionado1.length === 0) {
         alert("No hay ningún elemento seleccionado!");
         return;
-    } else {
-        // Asumimos que solo hay un elemento seleccionado
+    }else {
+
+        // seleccionamos el id, ya que esta en el posicion 0
         const idCitaDetail = seleccionado1[0].value;
 
+        if (!isNaN(idCitaDetail)) {
+            
         // Enviamos la solicitud con el idCitaDetail adicional
         fetch("../database/operarPacientes.php", {
             method: 'POST',
@@ -123,6 +125,10 @@ document.querySelector('#consultar').onclick = (event) => {
             .then(data => {
                 imprimirInfo(data); // Pasa los datos correctamente
             })
+        } else {
+            document.getElementById('infoHistorialConsultaP').innerHTML = "No has selecionado";
+        }
+
     };
     //metodo para imprimir los informaciones en el espacio del div
     function imprimirInfo(data) {

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button type="submit" id="regresar"><<>Regresar </button>
+    <h1>Atendiendo...</h1>
+    <div class="infoNoEditable">
+        <h2>Informacion de lacita</h2>
+        Medico: <div class="medicoEspacio" id="medicoEspacio">---</div><br>
+        Paciente: <div class="pacienteEspacio" id="pacienteEspacio">---</div><br>
+        Fecha: <div class="fechaEspacio" id="fechaEspacio">---</div><br>
+    </div>
+    <form action="../database/operarMedicoAtiendePacientes.php" method="post">
+        <div class="infoEditable">
+            Sintomatología: <br>
+            <textarea name="sintomaEspacio" id="sintomaEspacio"></textarea><br>
+            <div id="errorsintomasEspacio"></div>
+            <button type="button" id="guardarSintomas">Guardar</button><br>
+            Diagnostico: <br>
+            <input type="text" name="diagnostico" id="diagnostico"><br>
+            <div id="errorDianostioEspacio"></div>
+            <button type="button" id="guardarDianostico">Guardar</button><br>
+            <div class="divMedicacion">
+                <h3>Medicaciones</h3>
+                <label for="selectMedicacion">Seleccione un medicacion</label><br>
+                <select name="selectMedicacion" id="selectMedicacion"></select><br>
+                <div id="errorSelectMedicament"></div>
+                <label for="cantidadMedicamento">Introduce el cantidad de medicamento: </label><br>
+                <input type="text" name="cantidadMedicamento" id="cantidadMedicamento"><br>
+                <div id="errorCantidadMediamento"></div>
+                <label for="frecuenciaMedicamento">Introduce la frecuencia del medicamento: </label><br>
+                <input type="text" name="frecuenciaMedicamento" id="frecuenciaMedicamento">
+                <div id="errorFrecuenciaMedicamento"></div>
+                <label for="duracionMedicamento">Introduce cuantos diashay que tomarlo: </label><br>
+                <input type="number" name="duracionMedicamento" min="0" id="duracionMedicamento">
+                <div id="errorDuracionMedicamentos"></div>
+                <label for="cronicaMedicamento">Cronica?</label>
+                <input type="radio" name="cronicaMedicamento" id="cronicaMedicamento1" value="1" >Si
+                <input type="radio" name="cronicaMedicamento" id="cronicaMedicamento0" value="0"checked>No
+                <div id="infoCronicaMedicamento"></div>
+                <div id="errorCronicaMedicamento"></div>
+    
+                <button type="button" value="añadir" id="añadirMedicamentoBtn">Añadir Medicamentos</button>
+                <div id="errorAñadrLista"></div>
+                <div id="listaMedicamentosAñadido"></div>
+    
+            </div>
+            <div class="subirPDF">
+                <h2>Insertar PDF</h2>
+    
+            </div>
+        </div>
+    </form>
+
+
+    <script src="../feacture/operarMedicoAtiendePacientes.js"></script>
+</body>
+</html>
