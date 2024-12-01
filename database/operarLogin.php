@@ -18,6 +18,8 @@
                 $idPersona = $bbddUser['id'];
                 $tipo = "P";
                 header('Location: ../html/paciente.html?id='.$idPersona."&type=".$tipo);
+            }else{
+                header('Location: ../html/errorLogin.html');
             }
         }else if($resultadoUser2 && mysqli_num_rows($resultadoUser2) > 0){
              //lo transformamos en un array que contiene la fila entera de la consulata
@@ -26,7 +28,9 @@
                  $idPersona = $bbddUser['id'];
                  $tipo = "M";
                  header('Location: ../html/medico.html?id='.$idPersona."&type=".$tipo);
-             }
+             }else{
+                header('Location: ../html/errorLogin.html');
+            }
         }else{
             header('Location: ../html/errorLogin.html');
         }
