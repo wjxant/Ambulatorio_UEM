@@ -429,13 +429,14 @@ document.getElementById('añadirMedicamentoBtn').addEventListener('click', funct
 
 let errorMedico = true;
 let errorDia = true;
+let errorSintomas = true;
 let medicoSeleccionado;
 let fechaFormateada;
 //escoger valor de sintomatologia
 var sintomas
 
 // Bloquear el envío desde el inicio
-bloquearEnvio();
+//bloquearEnvio();
 //comprobacion de seleccion de medico de cita
 document.getElementById('divMedicoSelect').onblur = function () {
     // Obtenemos los elementos seleccionados del select
@@ -456,7 +457,7 @@ document.getElementById('divMedicoSelect').onblur = function () {
         document.getElementById('errorSelect').innerHTML = "";
         errorMedico = false;
     }
-    bloquearEnvio();
+    //bloquearEnvio();
 }
 
 
@@ -522,12 +523,25 @@ document.getElementById('diaCita').onblur = function () {
 
     }
     // Llamar a la función para bloquear el envío si hay error
-    bloquearEnvio(errorDia);
+    //bloquearEnvio(errorDia);
 
 };
 
 document.getElementById('sintomas').onblur = function () {
-    sintomas = document.getElementById('sintomas').value;
+
+sintomas = document.getElementById('sintomas').value;
+    if(sintomas.trim() ==""){
+        errorSintoma = true;
+        document.getElementById('errorSintoma').innerHTML= `
+         <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+         El sintoma no puede estar vacio, por que eres medico
+        `;
+    }else{
+        errorSintoma = false;
+        document.getElementById('errorSintoma').innerHTML= "";
+    }
+
+    
 }
 
 
@@ -539,64 +553,65 @@ function bloquearEnvio() {
         // document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML = `
         //         <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
         //             ${errorMedico} ${errorDia}`;
-    } else {
-        document.getElementById('citaMedicoFamiliaPButt').disabled = false; // Habilitar el botón
-        //document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML = ``;
-    }
+    } 
+    // else {
+    //     document.getElementById('citaMedicoFamiliaPButt').disabled = false; // Habilitar el botón
+    //     //document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML = ``;
+    // }
 }
 
 
 
 
-//PRESIONAR EL BOTON
+//PRESIONAR EL BOTON PARA PEDIR CITA
 
-// document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", function (event) {
+document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", function (event) {
+    if (errorMedico === true || errorDia === true || errorSintoma === true){
+        document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML = `
+        <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+            Error en el formulario
+        `;
+    }
 
-//     //document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML=`dsdsdsd: ${sintomas}`
-//     event.preventDefault();
+    //document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML=`dsdsdsd: ${sintomas}`
+    event.preventDefault();
 
-//     // Enviamos la solicitud con los datos de la cita
-//     fetch("../database/operarMedicoAtiendePacientes.php", {
-//         method: 'POST',
-//         headers: {
-//             'Content-type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//             id: id,
-//             tipoPerfil: tipoPerfil,
-//             id_cita: id_cita,
-//             medicoSeleccionado: medicoSeleccionado,
-//             fechaFormateada: fechaFormateada,
-//             sintomas: sintomas
-//         }),
-//     })
-//         .then(response => {
-//             // Si la respuesta no es "ok", lanzamos un error
-//             if (!response.ok) {
-//                 throw new Error('El servido no responde');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             // Recargamos la página
-//             window.location.reload();
-//             // Verificamos si hay un mensaje de la respuesta
-//             if (data.pedirCita && data.pedirCita.message) {
-//                 alert(data.pedirCita.message);  // Mostramos el mensaje de éxito o error
-//             }
+    // Enviamos la solicitud con los datos de la cita
+    fetch("../database/operarMedicoAtiendePacientes.php", {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            id: id,
+            tipoPerfil: tipoPerfil,
+            id_cita: id_cita,
+            medicoSeleccionado: medicoSeleccionado,
+            fechaFormateada: fechaFormateada,
+            sintomas: sintomas
+        }),
+    })
+        .then(response => {
+            // Si la respuesta no es "ok", lanzamos un error
+            if (!response.ok) {
+                throw new Error('El servido no responde');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Recargamos la página
+            window.location.reload();
+            // Verificamos si hay un mensaje de la respuesta
+            if (data.pedirCita && data.pedirCita.message) {
+                alert(data.pedirCita.message);  // Mostramos el mensaje de éxito o error
+            }
 
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             alert('Hubo un problema al procesar la solicitud.');
-//         });
-// });
-
-// //cuando damos el boton cerrar sesion 
-// document.getElementById('cerrarSesion').addEventListener('click', function () {
-//     window.location.replace('../index.html');
-
-// });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema al procesar la solicitud.');
+        });
+});
 
 
 

@@ -251,9 +251,10 @@ document.getElementById('diaCita').onblur = function () {
 
 };
 
-document.getElementById('sintomas').onblur = function (){
-    sintomas= document.getElementById('sintomas').value;
-}
+sintomas= document.getElementById('sintomas').value;
+// document.getElementById('sintomas').onblur = function (){
+//     sintomas= document.getElementById('sintomas').value;
+// }
 
 
 

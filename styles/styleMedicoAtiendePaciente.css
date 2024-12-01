@@ -119,5 +119,9 @@ img#erroricon {
     width: 18px;
 }
 .proximasCitasP{
-margin: 20px;
+    margin: 20px;
+}
+
+#listaMedicamentosAñadido{
+    margin: 20px;
 }

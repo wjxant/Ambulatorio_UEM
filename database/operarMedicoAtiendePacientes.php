@@ -246,7 +246,7 @@ if (isset($data['medicamentoSeleccioando']) && isset($data['cantidadSeleccionado
 $pedirCita = [];  // Inicializar el arreglo
 
 // Asegúrate de que los datos están en la solicitud y no vacíos
-if (isset($data['medicoSeleccionado']) && isset($data['fechaFormateada']) && isset($data['sintomas'])) {
+if (isset($data['medicoSeleccionado']) && isset($data['fechaFormateada'])) {
     $medicoSeleccionado = $data['medicoSeleccionado'];
     $fechaFormateada = $data['fechaFormateada'];
     $sintomas = $data['sintomas'];
