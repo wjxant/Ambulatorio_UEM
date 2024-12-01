@@ -277,6 +277,7 @@ document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", func
 
     //document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML=`dsdsdsd: ${sintomas}`
     event.preventDefault();
+    sintomas= document.getElementById('sintomas').value;
     
     // Enviamos la solicitud con los datos de la cita
     fetch("../database/operarPacientes.php", {
@@ -291,6 +292,7 @@ document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", func
             fechaFormateada: fechaFormateada,
             sintomas: sintomas
         }),
+        
     })
         .then(response => {
             // Si la respuesta no es "ok", lanzamos un error
