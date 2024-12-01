@@ -67,7 +67,50 @@ if ($result4->num_rows > 0) {
     while ($row = $result4->fetch_assoc()) {
         $datosMedicamentos[] = $row; // Añadimos cada fila al array
     }
+};
+//CONSULTA PARA LAS CITAS FUTURAS DE DE USUARIO
+$queryCitasFuturas = "SELECT 
+                            c.id AS id_cita,
+                            c.fecha AS fecha_cita,
+                            m.nombre AS nombre_medico
+                        FROM 
+                            cita c
+                        JOIN 
+                            medico m ON c.id_medico = m.id
+                        WHERE 
+                            c.id_paciente = (SELECT id_paciente FROM cita WHERE id = $id_cita)
+                            AND c.fecha > (SELECT fecha FROM cita WHERE id = $id_cita)";
+
+$result0 = $conn->query($queryCitasFuturas);
+
+// Comprobamos la respuesta de la consulta
+$citasFuturass = []; // Array para almacenar los resultados
+
+if ($result0->num_rows > 0) {
+    while ($row = $result0->fetch_assoc()) {
+        $citasFuturass[] = $row;
+    }
+} else {
+    $citasFuturass = null; // O un mensaje indicando que no hay citas futuras
 }
+
+
+//seleccion de medicos
+$queryAsignacionMedico = "SELECT * FROM medico
+                            ";
+$result8 = $conn->query($queryAsignacionMedico);
+
+$asignacionMedico = [['nombre' => 'Sin asignar']];
+if ($result8 && $result8->num_rows > 0) {
+    while ($row = $result8->fetch_assoc()) {
+        $asignacionMedico[] = $row;
+    }
+}
+
+
+
+
+
 
 
 //consulta para sacar la lista del medicamamento citado en la en la consulta
@@ -126,6 +169,8 @@ if (isset($data['sintomas'])) {
 }
 
 
+
+
 //cuando presionamos el actualizar diagnostico
 $actualizarDiagnostico = [];
 
@@ -154,7 +199,7 @@ if (isset($data['diagnostico'])) {
 }
 //insert de dato cuando guarda medicamento
 $datoMedicamentoGuardado = [];
-if(isset($data['medicamentoSeleccioando']) && isset($data['cantidadSeleccionadoMedicamento']) && isset($data['frecuenciaseleccionadoMedicamento']) && isset($data['diasSeleccionadoMedicamento']) && isset($data['cronicaSeleccionadoMedicamento']) ){
+if (isset($data['medicamentoSeleccioando']) && isset($data['cantidadSeleccionadoMedicamento']) && isset($data['frecuenciaseleccionadoMedicamento']) && isset($data['diasSeleccionadoMedicamento']) && isset($data['cronicaSeleccionadoMedicamento'])) {
     $id = $data['id'];
     $id_cita = $data['id_cita'];
     $tipoPerfil = $data['tipoPerfil'];
@@ -163,12 +208,12 @@ if(isset($data['medicamentoSeleccioando']) && isset($data['cantidadSeleccionadoM
     $frecuenciaseleccionadoMedicamento = $data['frecuenciaseleccionadoMedicamento'];
     $diasSeleccionadoMedicamento = $data['diasSeleccionadoMedicamento'];
     $cronicaSeleccionadoMedicamento = $data['cronicaSeleccionadoMedicamento'];
-    
 
-$queryInseccionDatos = "INSERT INTO cita_medicamento (id_cita, id_medicamento, cantidad, frecuencia, duracion, es_cronica)
+
+    $queryInseccionDatos = "INSERT INTO cita_medicamento (id_cita, id_medicamento, cantidad, frecuencia, duracion, es_cronica)
                             VALUES ($id_cita, $medicamentoSeleccioando, $cantidadSeleccionadoMedicamento, 
                             $frecuenciaseleccionadoMedicamento, $diasSeleccionadoMedicamento, $cronicaSeleccionadoMedicamento)";
-$queryQuitarError = "INSERT INTO cita_medicamento (id_cita, id_medicamento, cantidad, frecuencia, duracion, es_cronica)
+    $queryQuitarError = "INSERT INTO cita_medicamento (id_cita, id_medicamento, cantidad, frecuencia, duracion, es_cronica)
                             VALUES ($id_cita, $medicamentoSeleccioando, '$cantidadSeleccionadoMedicamento', 
                             '$frecuenciaseleccionadoMedicamento', $diasSeleccionadoMedicamento, $cronicaSeleccionadoMedicamento)
                             ON DUPLICATE KEY UPDATE
@@ -197,6 +242,40 @@ $queryQuitarError = "INSERT INTO cita_medicamento (id_cita, id_medicamento, cant
 
 
 
+
+$pedirCita = [];  // Inicializar el arreglo
+
+// Asegúrate de que los datos están en la solicitud y no vacíos
+if (isset($data['medicoSeleccionado']) && isset($data['fechaFormateada']) && isset($data['sintomas'])) {
+    $medicoSeleccionado = $data['medicoSeleccionado'];
+    $fechaFormateada = $data['fechaFormateada'];
+    $sintomas = $data['sintomas'];
+    $id = $data['id'];
+    // Consulta SQL con declaración preparada (prevención de inyecciones SQL)
+    $queryPedircitas = "INSERT INTO cita (id_paciente, id_medico, sintomatologia, fecha) VALUES ($id, $medicoSeleccionado, '$sintomas', '$fechaFormateada')";
+
+    $result10 = $conn->query(query: $queryPedircitas);
+    // Ejecutar la consulta
+    if ($result10) {
+        // Respuesta de éxito si la inserción fue exitosa
+        $pedirCita = array('status' => 'success', 'message' => 'Cita registrada con éxito.');
+
+        //echo json_encode($pedirCita);
+    } else {
+        // Respuesta de error si la inserción falla
+        $pedirCita = array('status' => 'error', 'message' => 'Error al insertar cita: ');
+        // echo json_encode($pedirCita);
+    }
+} else {
+    // Respuesta si los datos no están presentes
+    $pedirCita = array('status' => 'error', 'message' => 'Datos incompletos.');
+    //echo json_encode($response);
+}
+
+
+
+
+
 echo json_encode([
     'nombreMedico' => $nombreMedico['nombre'],
     'nombrePaciente' => $nombrePaciente['nombre'],
@@ -205,7 +284,14 @@ echo json_encode([
     'diagnosticocita' => $datosCita['diagnostico'],
     'datosMedicamentos' => $datosMedicamentos,
     'medicamentosCitado' => $medicamentosCitado,
+    'citasFuturass' => $citasFuturass,
     'actualizarSintoma' => $actualizarSintoma,
     'actualizarDiagnostico' => $actualizarDiagnostico,
-    'datoMedicamentoGuardado' => $datoMedicamentoGuardado
+    'datoMedicamentoGuardado' => $datoMedicamentoGuardado,
+    'asignacionMedico' => $asignacionMedico,
+    'pedirCita' => $pedirCita
+    
 ]);
+
+error_reporting(0);
+ini_set('display_errors', 0);

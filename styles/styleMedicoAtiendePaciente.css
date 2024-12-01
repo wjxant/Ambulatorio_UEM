@@ -1,0 +1,123 @@
+/* Estilos Globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Fondo y color base */
+body {
+    background-color: #f4f7fc;
+    color: #333;
+    line-height: 1.5;
+    padding: 15px;
+}
+
+/* Botón de regresar */
+#regresar {
+    display: inline-block;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    width: 190px;
+}
+
+#regresar:hover {
+    background-color: #2980b9;
+}
+
+/* Título centrado */
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* Tarjetas o secciones */
+.infoNoEditable,
+.infoEditable {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Ajuste para "Información de la cita" y "Sintomatología" */
+.infoEditable {
+    margin-top: 20px;
+}
+
+/* Encabezados dentro de las secciones */
+h2,
+h3 {
+    margin-bottom: 15px;
+    color: #34495e;
+}
+
+/* Campos de formulario */
+textarea,
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+/* Botones generales */
+button {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* Diseño responsivo */
+@media (min-width: 768px) {
+    .container {
+        max-width: 900px;
+    }
+}
+
+img#erroricon {
+    width: 18px;
+}
+.proximasCitasP{
+margin: 20px;
+}

@@ -3,6 +3,7 @@ const id = param.get('id');
 const tipoPerfil = param.get('type');
 const id_cita = param.get('id_Cita');
 
+
 console.log('ID:', id);
 console.log('Tipo de Perfil:', tipoPerfil);
 console.log('ID de cita: ', id_cita);
@@ -73,6 +74,38 @@ fetch("../database/operarMedicoAtiendePacientes.php", {
         } else {
             document.getElementById('listaMedicamentosAñadido').innerHTML = "No tiene ningun medicamento"
         }
+
+        //Citas futuras
+        //comprobamos si ha devuelto algun dato, en casode si, significa que hay citas, y si no, no
+        if (data.citasFuturass && data.citasFuturass.length > 0) {
+            // Generar el HTML para las citas futuras
+            document.getElementById('proximasCitasP').innerHTML = data.citasFuturass.map(citasFuturass1 => `
+                        Fecha: ${citasFuturass1.fecha_cita}<br>
+                        <ul>
+                            <li>ID: ${citasFuturass1.id_cita}</li>
+                            <li>Médico: ${citasFuturass1.nombre_medico}</li>
+                        </ul>
+                    `).join('');
+        } else {
+            // Manejo en caso de que no haya citas
+            document.getElementById('proximasCitasP').innerHTML = '<p>No hay citas futuras...</p>';
+        }
+
+
+
+        //select de los medicos
+
+        if (data.asignacionMedico.length > 0) {
+            //sacamos para imprimir en la lista
+            document.getElementById('divMedicoSelect').innerHTML = data.asignacionMedico.map(asignacionMedico1 => `
+                         <option value ="${asignacionMedico1.id}">${asignacionMedico1.nombre} || ${asignacionMedico1.especialidad}</option>
+                        `).join('');
+        }
+
+
+
+
+
     })
 
 
@@ -335,7 +368,7 @@ document.getElementById('añadirMedicamentoBtn').addEventListener('click', funct
     //iteramos
     for (let i = 0; i < document.getElementsByName('cronicaMedicamento').length; i++) {
         //comparamos cual esta seleccionado
-        if ( document.getElementsByName('cronicaMedicamento')[i].checked) {
+        if (document.getElementsByName('cronicaMedicamento')[i].checked) {
             //asignamos el valor al variable
             cronicaMedicamentoValue = document.getElementsByName('cronicaMedicamento')[i].value;
             break;  // Ya que solo uno puede estar seleccionado, podemos salir del bucle
@@ -357,7 +390,7 @@ document.getElementById('añadirMedicamentoBtn').addEventListener('click', funct
             cantidadSeleccionadoMedicamento: document.getElementById('cantidadMedicamento').value,
             frecuenciaseleccionadoMedicamento: document.getElementById('frecuenciaMedicamento').value,
             diasSeleccionadoMedicamento: document.getElementById('duracionMedicamento').value,
-            cronicaSeleccionadoMedicamento : cronicaMedicamentoValue
+            cronicaSeleccionadoMedicamento: cronicaMedicamentoValue
 
         }),
     })
@@ -391,6 +424,360 @@ document.getElementById('añadirMedicamentoBtn').addEventListener('click', funct
 
 });
 
+
+
+
+let errorMedico = true;
+let errorDia = true;
+let medicoSeleccionado;
+let fechaFormateada;
+//escoger valor de sintomatologia
+var sintomas
+
+// Bloquear el envío desde el inicio
+bloquearEnvio();
+//comprobacion de seleccion de medico de cita
+document.getElementById('divMedicoSelect').onblur = function () {
+    // Obtenemos los elementos seleccionados del select
+    const seleccionado2 = document.querySelectorAll("#divMedicoSelect option:checked");
+    // cogemos eldat seleccionado
+    medicoSeleccionado = seleccionado2[0].value;
+    if (medicoSeleccionado == "undefined" || medicoSeleccionado == "ningunMedico") {
+        document.getElementById('errorSelect').innerHTML = `
+        <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+        No has Seleccionado ningun Medico
+        `;
+        errorMedico = true;
+        document.getElementById('infoSelect').innerHTML = "";
+    } else {
+        document.getElementById('infoSelect').innerHTML = `
+        Has seleccionado El medico con id: ${medicoSeleccionado}
+        `;
+        document.getElementById('errorSelect').innerHTML = "";
+        errorMedico = false;
+    }
+    bloquearEnvio();
+}
+
+
+
+document.getElementById('diaCita').onblur = function () {
+    const inputFecha = document.getElementById('diaCita').value;
+    const fechaSeleccionada = new Date(inputFecha);
+    const fechaActual = new Date();
+    const maxFecha = new Date(fechaActual);
+    maxFecha.setDate(maxFecha.getDate() + 90); // Ajustar el límite de 90 días
+
+
+    // Limpiar mensajes previos
+    document.getElementById('errorDiaCita').innerHTML = '';
+
+    // Verificar si la fecha es válida
+    if (isNaN(fechaSeleccionada.getTime())) {
+        document.getElementById('errorDiaCita').innerHTML = `
+            <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+            Fecha no válida`;
+        errorDia = true;
+        document.getElementById('infoDiaSeleccionado').innerHTML = "";
+    }
+    // Comprobar si la fecha es anterior al día de hoy
+    else if (fechaSeleccionada < fechaActual) {
+        document.getElementById('errorDiaCita').innerHTML = `
+            <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+            Fecha no válida`;
+        errorDia = true;
+        document.getElementById('infoDiaSeleccionado').innerHTML = "";
+    }
+    // Comprobar si la fecha es en fin de semana
+    else if (fechaSeleccionada.getDay() === 0 || fechaSeleccionada.getDay() === 6) {
+        document.getElementById('errorDiaCita').innerHTML = `
+            <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+            Por favor, elija un día laborable`;
+        errorDia = true;
+        document.getElementById('infoDiaSeleccionado').innerHTML = "";
+    }
+    // Comprobar si la fecha es más tarde de un mes desde la fecha actual
+    else if (fechaSeleccionada > maxFecha) {
+        document.getElementById('errorDiaCita').innerHTML = `
+            <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+            Tan malo no estarás. Pide una fecha como máximo 30 días en el futuro`;
+        errorDia = true;
+        document.getElementById('infoDiaSeleccionado').innerHTML = "";
+    }
+    // Si pasa todas las validaciones
+    else {
+        let fecha = new Date(fechaSeleccionada);
+
+        // Extraer el año, mes y día
+        let year = fecha.getFullYear();
+        let month = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Los meses comienzan en 0, por eso se le suma 1
+        let day = fecha.getDate().toString().padStart(2, '0');
+
+        // Formatear la fecha como yyyy-mm-dd
+        fechaFormateada = `${year}-${month}-${day}`;
+        document.getElementById('infoDiaSeleccionado').innerHTML = `
+            Hs seleccionado el dia  ${fechaFormateada}`;
+        errorDia = false;
+
+
+    }
+    // Llamar a la función para bloquear el envío si hay error
+    bloquearEnvio(errorDia);
+
+};
+
+document.getElementById('sintomas').onblur = function () {
+    sintomas = document.getElementById('sintomas').value;
+}
+
+
+
+// Función para bloquear el envío dependiendo de los errores
+function bloquearEnvio() {
+    if (errorMedico === true || errorDia === true) {
+        document.getElementById('citaMedicoFamiliaPButt').disabled = true; // Deshabilitar el botón
+        // document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML = `
+        //         <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+        //             ${errorMedico} ${errorDia}`;
+    } else {
+        document.getElementById('citaMedicoFamiliaPButt').disabled = false; // Habilitar el botón
+        //document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML = ``;
+    }
+}
+
+
+
+
+//PRESIONAR EL BOTON
+
+// document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", function (event) {
+
+//     //document.getElementById('errorCitaMedicoFamiliaPButt').innerHTML=`dsdsdsd: ${sintomas}`
+//     event.preventDefault();
+
+//     // Enviamos la solicitud con los datos de la cita
+//     fetch("../database/operarMedicoAtiendePacientes.php", {
+//         method: 'POST',
+//         headers: {
+//             'Content-type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//             id: id,
+//             tipoPerfil: tipoPerfil,
+//             id_cita: id_cita,
+//             medicoSeleccionado: medicoSeleccionado,
+//             fechaFormateada: fechaFormateada,
+//             sintomas: sintomas
+//         }),
+//     })
+//         .then(response => {
+//             // Si la respuesta no es "ok", lanzamos un error
+//             if (!response.ok) {
+//                 throw new Error('El servido no responde');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             // Recargamos la página
+//             window.location.reload();
+//             // Verificamos si hay un mensaje de la respuesta
+//             if (data.pedirCita && data.pedirCita.message) {
+//                 alert(data.pedirCita.message);  // Mostramos el mensaje de éxito o error
+//             }
+
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             alert('Hubo un problema al procesar la solicitud.');
+//         });
+// });
+
+// //cuando damos el boton cerrar sesion 
+// document.getElementById('cerrarSesion').addEventListener('click', function () {
+//     window.location.replace('../index.html');
+
+// });
+
+
+
+//CUANDO PRESIONAMOS AL BOTON 
+// document.getElementById('registroTotal').addEventListener('click', function (event) {
+//     event.preventDefault;
+
+
+//     fetch("../database/operarRegistroTotal.php", {
+//         method: 'POST',
+//         headers: {
+//             'Content-type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//             id: param.get('id'),
+//             id_cita: id_cita,
+//             diagnostico: document.getElementById('diagnostico').value,
+//             sintoma: document.getElementById('sintomaEspacio').value,
+//             pdf: "ok"
+//         }),
+//     })
+//         .then(response => {
+//             // Si la respuesta no es "ok", lanzamos un error
+//             if (!response.ok) {
+//                 throw new Error('El servido no responde');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             // Recargamos la página
+//             //window.location.reload();
+//             // Verificamos si hay un mensaje de la respuesta
+//             if (data.actualizarDatosBBDD && data.actualizarDatosBBDD.message) {
+//                 alert(data.actualizarDatosBBDD.message);  // Mostramos el mensaje de éxito o error
+//             }
+
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             alert('Hubo un problema al procesar la solicitud.');
+//         });
+
+
+
+
+
+
+
+
+
+
+//     const inputFile = document.getElementById("pdf");
+//     //comprobamos si ha subido archivo o no 
+//     let error = [];
+//     let comprobacionSintoma = false;
+//     let comrpbacionDiagnostico = false;
+//     let comprobacionPDF = false;
+//     if (inputFile.files.length > 0) {
+//         comprobacionPDF = true;
+//     } else {
+//         error.push("No se ha adjuntado el PDF");
+//         comprobacionPDF = false;
+//     }
+//     if (document.getElementById('sintomaEspacio').value.trim() == "") {
+//         error.push("El sintoma no puede etar vacio");
+//         comprobacionSintoma = false;
+
+//     } else {
+//         comprobacionSintoma = true;
+//     }
+//     if (document.getElementById('diagnostico').value.trim() == "") {
+//         error.push("El Diagnostico no puede etar vacio");
+//         comrpbacionDiagnostico = false;
+
+//     } else {
+//         comrpbacionDiagnostico = true;
+//     }
+//     //comprobar si alguno de los compribaciones esta vacio o no 
+//     if (comprobacionSintoma == false || comrpbacionDiagnostico == false || comprobacionPDF == false) {
+//         document.getElementById('infoRegistroTotal').innerHTML = error
+//             .map(function (errorr) {
+//                 return `<ul>
+//                                     <li> <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">${errorr}</li>
+//                                 </ul>`;
+//             })
+//             .join(''); // Une los elementos generados en una cadena
+//     }
+
+
+// });
+
+
+
+
+
+
+document.getElementById('registroTotal').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    const inputFile = document.getElementById('pdf').files[0];
+    const formData = new FormData();
+
+    formData.append('id', param.get('id'));
+    formData.append('id_cita', id_cita);
+    formData.append('diagnostico', document.getElementById('diagnostico').value);
+    formData.append('sintoma', document.getElementById('sintomaEspacio').value);
+    if (inputFile) {
+        formData.append('pdf', inputFile);
+    } else {
+        alert("No se ha adjuntado el PDF.");
+        return;
+    }
+
+    fetch("../database/operarRegistroTotal.php", {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('El servidor no responde');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.actualizarDatosBBDD && data.actualizarDatosBBDD.message) {
+                alert(data.actualizarDatosBBDD.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema al procesar la solicitud.');
+        });
+
+
+
+        //comprobaciones 
+        //comprobamos si ha subido archivo o no 
+    let error = [];
+    let comprobacionSintoma = false;
+    let comrpbacionDiagnostico = false;
+    let comprobacionPDF = false;
+    if (inputFile.files.length > 0) {
+        comprobacionPDF = true;
+    } else {
+        error.push("No se ha adjuntado el PDF");
+        comprobacionPDF = false;
+    }
+    if (document.getElementById('sintomaEspacio').value.trim() == "") {
+        error.push("El sintoma no puede etar vacio");
+        comprobacionSintoma = false;
+
+    } else {
+        comprobacionSintoma = true;
+    }
+    if (document.getElementById('diagnostico').value.trim() == "") {
+        error.push("El Diagnostico no puede etar vacio");
+        comrpbacionDiagnostico = false;
+
+    } else {
+        comrpbacionDiagnostico = true;
+    }
+    //comprobar si alguno de los compribaciones esta vacio o no 
+    if (comprobacionSintoma == false || comrpbacionDiagnostico == false || comprobacionPDF == false) {
+        document.getElementById('infoRegistroTotal').innerHTML = error
+            .map(function (errorr) {
+                return `<ul>
+                                    <li> <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">${errorr}</li>
+                                </ul>`;
+            })
+            .join(''); // Une los elementos generados en una cadena
+    }
+
+        
+});
+
+
+
+//para el regreso del al perfil 
+document.getElementById('regresar').addEventListener('click', function () {
+    window.location.href =`../html/medico.html?id=${id}&type=M`;
+});
 
 
 

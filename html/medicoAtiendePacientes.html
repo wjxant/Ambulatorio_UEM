@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../styles/styleMedicoAtiendePaciente.css">
+    <title>Atendiendo...</title>
 </head>
+
 <body>
-    <button type="submit" id="regresar"><<>Regresar </button>
+    <button type="submit" id="regresar">
+        <<>Regresar
+    </button>
     <h1>Atendiendo...</h1>
     <div class="infoNoEditable">
         <h2>Informacion de lacita</h2>
@@ -14,7 +19,7 @@
         Paciente: <div class="pacienteEspacio" id="pacienteEspacio">---</div><br>
         Fecha: <div class="fechaEspacio" id="fechaEspacio">---</div><br>
     </div>
-    <form action="../database/operarMedicoAtiendePacientes.php" method="post">
+    <form method="post">
         <div class="infoEditable">
             Sintomatología: <br>
             <textarea name="sintomaEspacio" id="sintomaEspacio"></textarea><br>
@@ -39,24 +44,51 @@
                 <input type="number" name="duracionMedicamento" min="0" id="duracionMedicamento">
                 <div id="errorDuracionMedicamentos"></div>
                 <label for="cronicaMedicamento">Cronica?</label>
-                <input type="radio" name="cronicaMedicamento" id="cronicaMedicamento1" value="1" >Si
-                <input type="radio" name="cronicaMedicamento" id="cronicaMedicamento0" value="0"checked>No
+                <input type="radio" name="cronicaMedicamento" id="cronicaMedicamento1" value="1">Si
+                <input type="radio" name="cronicaMedicamento" id="cronicaMedicamento0" value="0" checked>No
                 <div id="infoCronicaMedicamento"></div>
                 <div id="errorCronicaMedicamento"></div>
-    
+
                 <button type="button" value="añadir" id="añadirMedicamentoBtn">Añadir Medicamentos</button>
                 <div id="errorAñadrLista"></div>
                 <div id="listaMedicamentosAñadido"></div>
-    
+
             </div>
             <div class="subirPDF">
                 <h2>Insertar PDF</h2>
-    
+                <label for="pdf">Subir Informes:</label>
+                <input type="file" id="pdf" name="pdf" accept=".pdf">
+            </div>
+            <div class="divDerivarEspecialista">
+                <h2>Proximas Citas del Paciente:</h2>
+                <div class="proximasCitasP" id="proximasCitasP">No has tenido ningun cita</div><br>
+                <div class="pedirCitaEspecialista">
+                    <label for="divMedicoSelect">Selecciona uno Medico para la Cita</label><br>
+                    <select name="divMedicoSelect" id="divMedicoSelect">
+                        <option value="ningunMedico">--- Seleccione un Medico ---</option>
+                    </select><br>
+                    <div id="errorSelect"></div>
+                    <div id="infoSelect"></div>
+                    <label for="diaCita">Seleccione un dia de la cita: </label><br>
+                    <input type="date" name="diaCita" id="diaCita">
+                    <div id="infoDiaSeleccionado"></div>
+                    <div id="errorDiaCita"></div><br>
+
+                    <label for="sintomas">Escribe brevemente qué te ocurre: </label><br>
+                    <textarea name="sintomas" id="sintomas"></textarea><br>
+
+                    <button type="button" name="citaMedicoFamiliaPButt" id="citaMedicoFamiliaPButt">Pedir cita con el
+                        Medico</button>
+                    <div class="errorCitaMedicoFamiliaPButt" id="errorCitaMedicoFamiliaPButt"></div>
+                </div>
             </div>
         </div>
+        <button type="submit" id="registroTotal">Registrar</button>
+        <div id="infoRegistroTotal"></div>
     </form>
 
 
     <script src="../feacture/operarMedicoAtiendePacientes.js"></script>
 </body>
+
 </html>

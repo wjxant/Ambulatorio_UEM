@@ -80,6 +80,12 @@ document.getElementById('tablaConsulta').addEventListener('click', function(even
 
     window.location.href =`../html/medicoAtiendePacientes.html?id=${id}&type=M&id_Cita=${event.target.value}`;
 
+});
 
+
+
+//cuando damos el boton cerrar sesion 
+document.getElementById('cerrarSesion').addEventListener("click", function () {
+    window.location.replace('../index.html');
 
 });

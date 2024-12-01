@@ -28,7 +28,7 @@ h1 {
 }
 
 /* Contenedores como tarjetas */
-.infoPersonalPDiv, .medicamenosActualesPDiv, .historialConsultaPDiv, .pedirCita, .citacionesProximaPDiv {
+.infoPersonalPDiv, .Consultas {
     background-color: #fff;
     padding: 20px;
     margin: 10px 0;
@@ -58,52 +58,40 @@ h1 {
     background-color: #c0392b;
 }
 
-/* Campos de formulario */
-textarea, input[type="date"], select {
+/* Tabla de consultas */
+table {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    font-size: 1rem;
-    margin-bottom: 10px;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
-/* Botones */
-button {
-    background-color: #3498db;
+thead {
+    background-color: #2c3e50;
     color: white;
+}
+
+th, td {
+    text-align: left;
     padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+    border: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
     cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #2980b9;
-}
-
-/* Mensajes de error */
-#errorSelect, #errorDiaCita {
-    color: #e74c3c;
+/* Mensajes de información */
+#infoTabla {
+    margin-top: 10px;
+    color: #3498db;
     font-size: 0.9rem;
-    margin-top: -5px;
 }
 
-#errorSelect img, #errorDiaCita img {
-    width: 20px;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
-/* Listas */
-ul {
-    margin-bottom: 20px;
-    margin-left: 30px;
-}
 img#erroricon {
     width: 18px;
 }

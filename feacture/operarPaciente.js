@@ -206,10 +206,10 @@ document.getElementById('diaCita').onblur = function () {
         document.getElementById('infoDiaSeleccionado').innerHTML = "";
     }
     // Comprobar si la fecha es anterior al día de hoy
-    else if (fechaSeleccionada < fechaActual) {
+    else if (fechaSeleccionada < fechaActual+1) { //he puesto un +1 para la comparacion, por ejemplo hoy<hoy 
         document.getElementById('errorDiaCita').innerHTML = `
             <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
-            Fecha no válida`;
+            La cita no puede ser antes de hoy`;
         errorDia = true;
         document.getElementById('infoDiaSeleccionado').innerHTML = "";
     }

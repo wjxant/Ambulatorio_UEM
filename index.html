@@ -12,16 +12,26 @@
         <h1>Login</h1>
         <form method="post" action="database/operarLogin.php">
             <label for="usuario">Usuario:</label><br>
-            <input type="text" name="usuario" id="usuario" placeholder="X000000000" value="L654321987"><br>
+            <input type="text" name="usuario" id="usuario" placeholder="X000000000" value=""><br>
             <div id="errorUser"></div>
             <label for="contraseña">Contraseña: </label><br>
-            <input type="password" name="contraseña" id="contraseña" placeholder="Aa0000@" value="DrLuis@2023">
+            <input type="password" name="contraseña" id="contraseña" placeholder="Aa0000@" value="">
             <div id="errorContraseña"></div>
             <button type="submit" name="sumbit" id="submit">Enviar</button>
             <div id="errorValidacion"></div>
             <br>
             <div>
-                <a href="html/recuperarContraseña.html">Recuperar contraseña</a>
+                <a href="html/recuperarContraseña.html" style="display: none;">Recuperar contraseña</a>
+                <ul>Medico
+                    <li>US: L654321987</li>
+                    <li>PASS: DrLuis@2023</li>
+                </ul>
+                <ul>Paciente
+                    <li>US: J123456789</li>
+                    <li>PASS: Juan@1234</li>
+                <ul>
+
+                </ul>
             </div>
         </form>
     </div>
