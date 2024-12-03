@@ -614,7 +614,7 @@ document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", func
             Error en el formulario
         `;
     } else {
-        sintomas = document.getElementById('sintomas').value
+        sintomas1 = document.getElementById('sintomas').value
         // Enviamos la solicitud con los datos de la cita
         fetch("../database/operarMedicoAtiendePacientes.php", {
             method: 'POST',
@@ -627,7 +627,7 @@ document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", func
                 id_cita: id_cita,
                 medicoSeleccionado: medicoSeleccionado,
                 fechaFormateada: fechaFormateada,
-                sintomas: sintomas
+                sintomas1: sintomas1
             }),
         })
             .then(response => {

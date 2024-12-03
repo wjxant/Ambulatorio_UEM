@@ -148,8 +148,12 @@ if (isset($data['sintomas'])) {
     $id = $data['id'];
     $id_cita = $data['id_cita'];
     $sintomas = $data['sintomas'];
+    // $medicoSeleccionado = $data['medicoSeleccionado'];
+    // $fechaFormateada = $data['fechaFormateada'];
 
     $insert = "UPDATE Cita SET sintomatologia = '$sintomas' WHERE id = $id_cita AND id_medico = $id";
+    //$insert = "INSERT INTO cita (id_paciente, id_medico, sintomatologia, fecha) VALUES ($id, $medicoSeleccionado, '$sintomas', '$fechaFormateada')";
+
     $result5 = $conn->query(query: $insert);
     // Ejecutar la consulta
     if ($result5) {
@@ -249,10 +253,10 @@ $pedirCita = [];  // Inicializar el arreglo
 if (isset($data['medicoSeleccionado']) && isset($data['fechaFormateada'])) {
     $medicoSeleccionado = $data['medicoSeleccionado'];
     $fechaFormateada = $data['fechaFormateada'];
-    $sintomas = $data['sintomas'];
+    $sintomas1 = $data['sintomas1'];
     $id = $data['id'];
     // Consulta SQL con declaración preparada (prevención de inyecciones SQL)
-    $queryPedircitas = "INSERT INTO cita (id_paciente, id_medico, sintomatologia, fecha) VALUES ($id, $medicoSeleccionado, '$sintomas', '$fechaFormateada')";
+    $queryPedircitas = "INSERT INTO cita (id_paciente, id_medico, sintomatologia, fecha) VALUES ($id, $medicoSeleccionado, '$sintomas1', '$fechaFormateada')";
 
     $result10 = $conn->query(query: $queryPedircitas);
     // Ejecutar la consulta
