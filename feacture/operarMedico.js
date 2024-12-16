@@ -75,10 +75,18 @@ document.getElementById('cerrarSesion').addEventListener("click", function () {
 
 // Delegación de eventos para los botones "Atender"
 document.getElementById('tablaConsulta').addEventListener('click', function(event) {
-    //event.target.value es obtener el valor del boton (en la tabla de ariba cada boton he puesto el value del id de la consulta)
-    alert(`Atender la cita con ID: ${event.target.value}`);
+    //event.target.value es obtener el valor del boton, en este caso es el id de la cita (en la tabla de ariba cada boton he puesto el value del id de la consulta)
+    //alert(`Atender la cita con ID: ${event.target.value}`);
 
-    window.location.href =`../html/medicoAtiendePacientes.html?id=${id}&type=M&id_Cita=${event.target.value}`;
+    //comprobamos si hemos dado el boton
+    if (isNaN(event.target.value)){
+        alert(`Por favor, presiona el boton Atender`);
+        return
+    }else{
+        window.location.href =`../html/medicoAtiendePacientes.html?id=${id}&type=M&id_Cita=${event.target.value}`;
+    }
+
+    
 
 });
 

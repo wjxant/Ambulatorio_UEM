@@ -41,7 +41,7 @@ if ($result->num_rows > 0) {
 $queryCitasFuturas = "SELECT Cita.id, Medico.nombre, Cita.fecha 
                       FROM Cita
                       INNER JOIN Medico ON Cita.id_medico = Medico.id 
-                      WHERE Cita.fecha > CURDATE() AND id_paciente = $id";
+                      WHERE Cita.fecha >= CURDATE() AND id_paciente = $id";
 $result2 = $conn->query($queryCitasFuturas);
 
 // Comprobamos la respuesta de la consulta

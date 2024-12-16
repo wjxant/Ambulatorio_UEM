@@ -35,6 +35,8 @@ fetch("../database/operarMedicoAtiendePacientes.php", {
         //comprueba si en el bbd hay algun sintomas
         if (data.sintomasCita !== "") {
             document.getElementById('sintomaEspacio').value = data.sintomasCita;
+            document.getElementById('sintomas').value = data.sintomasCita;
+            
         } else {
             // Asigna un valor por defecto si no está definido
             document.getElementById('sintomaEspacio').value = 'No tiene Valor';
@@ -356,6 +358,46 @@ document.getElementById('añadirMedicamentoBtn').addEventListener('click', funct
 
     //comprobar otra vez si todo los datos estan rellenos
     if (comprobacionCa !== true || comprobacionF !== true || comprobacionD !== true || comprobacionS !== true) {
+        
+        
+        if(comprobacionCa !== true){
+            document.getElementById('errorCantidadMediamento').innerHTML=`
+             <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+                El Cantidad no puede estar Vacio
+            `
+        }else{
+            document.getElementById('errorCantidadMediamento').innerHTML=`
+           `;
+        }
+        if(comprobacionF !== true){
+            document.getElementById('errorFrecuenciaMedicamento').innerHTML=`
+             <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+                La frecuencia no puede estar Vacio
+            `
+        }else{
+            document.getElementById('errorFrecuenciaMedicamento').innerHTML=`
+            `;
+        }
+        if(comprobacionD !== true){
+            document.getElementById('duracionMedicamento').innerHTML=`
+             <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+                El duracion no puede estar Vacio
+            `
+        }else{
+            document.getElementById('duracionMedicamento').innerHTML=`
+            `
+        }
+        if(comprobacionS !== true){
+            document.getElementById('errorSelectMedicament').innerHTML=`
+             <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">
+                El Medicamento no puede estar Vacio
+            `
+        }else{
+            document.getElementById('errorSelectMedicament').innerHTML=`
+
+           `
+        }
+        
         //si no se para aqui
         return
     }
@@ -572,7 +614,7 @@ document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", func
             Error en el formulario
         `;
     } else {
-        sintomas = document.getElementById('sintomas').value
+        sintomas1 = document.getElementById('sintomas').value
         // Enviamos la solicitud con los datos de la cita
         fetch("../database/operarMedicoAtiendePacientes.php", {
             method: 'POST',
@@ -585,7 +627,7 @@ document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", func
                 id_cita: id_cita,
                 medicoSeleccionado: medicoSeleccionado,
                 fechaFormateada: fechaFormateada,
-                sintomas: sintomas
+                sintomas1: sintomas1
             }),
         })
             .then(response => {
@@ -615,100 +657,6 @@ document.getElementById('citaMedicoFamiliaPButt').addEventListener("click", func
 
 
 });
-
-
-
-//CUANDO PRESIONAMOS AL BOTON 
-// document.getElementById('registroTotal').addEventListener('click', function (event) {
-//     event.preventDefault;
-
-
-//     fetch("../database/operarRegistroTotal.php", {
-//         method: 'POST',
-//         headers: {
-//             'Content-type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//             id: param.get('id'),
-//             id_cita: id_cita,
-//             diagnostico: document.getElementById('diagnostico').value,
-//             sintoma: document.getElementById('sintomaEspacio').value,
-//             pdf: "ok"
-//         }),
-//     })
-//         .then(response => {
-//             // Si la respuesta no es "ok", lanzamos un error
-//             if (!response.ok) {
-//                 throw new Error('El servido no responde');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             // Recargamos la página
-//             //window.location.reload();
-//             // Verificamos si hay un mensaje de la respuesta
-//             if (data.actualizarDatosBBDD && data.actualizarDatosBBDD.message) {
-//                 alert(data.actualizarDatosBBDD.message);  // Mostramos el mensaje de éxito o error
-//             }
-
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             alert('Hubo un problema al procesar la solicitud.');
-//         });
-
-
-
-
-
-
-
-
-
-
-//     const inputFile = document.getElementById("pdf");
-//     //comprobamos si ha subido archivo o no 
-//     let error = [];
-//     let comprobacionSintoma = false;
-//     let comrpbacionDiagnostico = false;
-//     let comprobacionPDF = false;
-//     if (inputFile.files.length > 0) {
-//         comprobacionPDF = true;
-//     } else {
-//         error.push("No se ha adjuntado el PDF");
-//         comprobacionPDF = false;
-//     }
-//     if (document.getElementById('sintomaEspacio').value.trim() == "") {
-//         error.push("El sintoma no puede etar vacio");
-//         comprobacionSintoma = false;
-
-//     } else {
-//         comprobacionSintoma = true;
-//     }
-//     if (document.getElementById('diagnostico').value.trim() == "") {
-//         error.push("El Diagnostico no puede etar vacio");
-//         comrpbacionDiagnostico = false;
-
-//     } else {
-//         comrpbacionDiagnostico = true;
-//     }
-//     //comprobar si alguno de los compribaciones esta vacio o no 
-//     if (comprobacionSintoma == false || comrpbacionDiagnostico == false || comprobacionPDF == false) {
-//         document.getElementById('infoRegistroTotal').innerHTML = error
-//             .map(function (errorr) {
-//                 return `<ul>
-//                                     <li> <img src="../assets/icon/errorIcon.png" alt="errorIcon" id="erroricon">${errorr}</li>
-//                                 </ul>`;
-//             })
-//             .join(''); // Une los elementos generados en una cadena
-//     }
-
-
-// });
-
-
-
-
 
 
 document.getElementById('registroTotal').addEventListener('click', function (event) {
